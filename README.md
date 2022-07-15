@@ -1,4 +1,4 @@
-# Simple Chat APp
+# Simple Chat App
 * ## How to run:
     > Go to Project Dir
     >>
