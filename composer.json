@@ -1,0 +1,19 @@
+{
+    "name": "rkb/simple_chat",
+    "require": {
+        "cboden/ratchet": "dev-master"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Rkb\\SimpleChat\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rakib Hosen",
+            "email": "rakib.151045@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
