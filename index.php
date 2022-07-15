@@ -54,17 +54,13 @@
         let data = JSON.parse(event.data);
         console.log(data);
         let messageList = document.querySelector('.message-list');
-        // messageList.innerHTML = '';
-        let messageHtml = Object.keys(data).map(e => {
-            return (
-                `<div>
-              <h5>${data[e]['from']}</h5>
-                <p>${data[e]['message']}</p>
-              </div>`
-            )
-        })
-
-        messageList.innerHTML = messageHtml;
+        let parrentDiv = document.createElement('div');
+        let nameH5 = document.createElement('h5');
+        nameH5.appendChild(document.createTextNode(data.from));
+        let messageP = document.createElement('p');
+        messageP.appendChild(document.createTextNode(data.message));
+        parrentDiv.append(nameH5,messageP);
+        messageList.append(parrentDiv)
     });
 
     function sendMessage(e) {

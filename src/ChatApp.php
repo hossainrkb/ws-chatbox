@@ -13,7 +13,6 @@ require __DIR__ . '/../vendor/autoload.php';
 class ChatApp implements MessageComponentInterface
 {
     protected $allClients;
-    public static $allMessageList = [];
     public function __construct()
     {
         $this->allClients = new \SplObjectStorage;
@@ -21,11 +20,8 @@ class ChatApp implements MessageComponentInterface
 
     public function onOpen(ConnectionInterface $conn)
     {
-        // echo "\nConn Established\n";
+        echo "\nConn Established\n";
         $this->allClients->attach($conn);
-        foreach ($this->allClients as $key=> $client) {
-            $client->send(json_encode(static::$allMessageList));
-        }
     }
     public function onMessage(ConnectionInterface $from, $msg)
     {
@@ -33,15 +29,24 @@ class ChatApp implements MessageComponentInterface
         // echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
         // , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
         $data = json_decode($msg, true);
-        $messageCount = count(static::$allMessageList);
-        static::$allMessageList[++$messageCount] = [
-            'from' => $data['from_user'],
-            'from_id' => $from->resourceId,
-            'client_id' => '',
-            'message' => $data['message']
-        ];
-        foreach ($this->allClients as $key=> $client) {
-            $client->send(json_encode(static::$allMessageList));
+        $tempArray = [];
+        foreach ($this->allClients as $client) {
+            if ($client == $from) {
+                $tempArray = [
+                    'from' => 'Me',
+                    'from_id' => $from->resourceId,
+                    'client_id' => '',
+                    'message' => $data['message']
+                ];
+            }else{
+                $tempArray = [
+                    'from' => $data['from_user'],
+                    'from_id' => $from->resourceId,
+                    'client_id' => '',
+                    'message' => $data['message']
+                ];
+            }
+            $client->send(json_encode($tempArray));
         }
     }
     public function onClose(ConnectionInterface $conn)
